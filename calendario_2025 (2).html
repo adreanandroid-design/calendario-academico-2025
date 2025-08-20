@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário Acadêmico 2025 - Cursos Superiores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="rgba(255,255,255,0.1)"/></svg>') no-repeat center bottom;
+            background-size: cover;
+            opacity: 0.3;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .courses {
+            background: linear-gradient(90deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .semester {
+            margin-bottom: 40px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        
+        .semester-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            position: relative;
+        }
+        
+        .semester-header::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 10px solid #764ba2;
+        }
+        
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        
+        .month-card {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .month-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+        
+        .month-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
+        }
+        
+        .month-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .event {
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .event-date {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 0.9rem;
+        }
+        
+        .event-description {
+            color: #555;
+            margin-top: 2px;
+            line-height: 1.4;
+        }
+        
+        .highlight {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .important {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 184, 148, 0.3);
+        }
+        
+        .summary {
+            background: linear-gradient(135deg, #fdcb6e 0%, #e17055 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .summary h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+        
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .stat {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .month-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 CALENDÁRIO ACADÊMICO 2025</h1>
+            <div class="subtitle">Instituto Federal de Educação, Ciência e Tecnologia Baiano - Campus Serrinha</div>
+        </div>
+        
+        <div class="courses">
+            🎓 CURSOS SUPERIORES: Licenciatura em Ciências Biológicas • Tecnologia em Gestão de Cooperativas
+        </div>
+        
+        <div class="content">
+            <div class="semester">
+                <div class="semester-header">
+                    🌟 PRIMEIRO SEMESTRE 2025 (2025.1)
+                </div>
+                
+                <div class="month-grid">
+                    <div class="month-card">
+                        <div class="month-title">📅 AGOSTO/2025</div>
+                        <div class="event">
+                            <div class="event-date">04 a 08/08</div>
+                            <div class="event-description">Nivelamento (ingressantes)</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">08 a 12/08</div>
+                            <div class="event-description">Renovação de matrícula (veteranas)</div>
+                        </div>
+                        <div class="highlight">
+                            🚀 13/08 - INÍCIO DO I SEMESTRE / AULA INAUGURAL
+                        </div>
+                        <div class="event">
+                            <div class="event-date">13 a 15/08</div>
+                            <div class="event-description">Semana Acadêmica</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">13 a 19/08</div>
+                            <div class="event-description">Tutoria Acadêmica / Ajustes de matrícula</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">25 a 29/08</div>
+                            <div class="event-description">Solicitação de Diploma e aproveitamentos</div>
+                        </div>
+                    </div>
+                    
+                    <div class="month-card">
+                        <div class="month-title">📅 SETEMBRO/2025</div>
+                        <div class="event">
+                            <div class="event-date">01 a 19/09</div>
+                            <div class="event-description">Período para solicitação de Diploma</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">07/09</div>
+                            <div class="event-description">🇧🇷 Independência do Brasil</div>
+                        </div>
+                        <div class="important">
+                            🎓 25/09 - COLAÇÃO DE GRAU: Ciências Biológicas
+                        </div>
+                        <div class="important">
+                            🎓 26/09 - COLAÇÃO DE GRAU: Gestão de Cooperativas
+                        </div>
+                    </div>
+                    
+                    <div class="month-card">
+                        <div class="month-title">📅 OUTUBRO/2025</div>
+                        <div class="event">
+                            <div class="event-date">12/10</div>
+                            <div class="event-description">🙏 Nossa Senhora Aparecida</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">15/10</div>
+                            <div class="event-description">👨‍🏫 Dia do Professor</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">28/10</div>
+                            <div class="event-description">Recesso - Dia do Servidor Público</div>
+                        </div>
+                    </div>
+                    
+                    <div class="month-card">
+                        <div class="month-title">📅 NOVEMBRO/2025</div>
+                        <div class="event">
+                            <div class="event-date">02/11</div>
+                            <div class="event-description">🕊️ Dia de Finados</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">15/11</div>
+                            <div class="event-description">🇧🇷 Proclamação da República</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">17 a 19/11</div>
+                            <div class="event-description">Tutoria / Aproveitamento para estágio</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">20/11</div>
+                            <div class="event-description">✊ Dia da Consciência Negra</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">24 a 28/11</div>
+                            <div class="event-description">Entrega de atividades complementares</div>
+                        </div>
+                    </div>
+                    
+                    <div class="month-card">
+                        <div class="month-title">📅 DEZEMBRO/2025</div>
+                        <div class="event">
+                            <div class="event-date">01 a 05/12</div>
+                            <div class="event-description">Entrega de atividades complementares</div>
+                        </div>
+                        <div class="highlight">
+                            📋 16/12 - TÉRMINO DO I SEMESTRE
+                        </div>
+                        <div class="important">
+                            📝 17 a 19/12 - PROVAS FINAIS
+                        </div>
+                        <div class="important">
+                            📊 22/12 - PUBLICAÇÃO DOS RESULTADOS FINAIS
+                        </div>
+                        <div class="event">
+                            <div class="event-date">23 a 31/12</div>
+                            <div class="event-description">Renovação de matrícula 2025.2</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">25/12</div>
+                            <div class="event-description">🎄 Natal</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="semester">
+                <div class="semester-header">
+                    🌟 SEGUNDO SEMESTRE 2025 (2025.2)
+                </div>
+                
+                <div class="month-grid">
+                    <div class="month-card">
+                        <div class="month-title">📅 JANEIRO/2026</div>
+                        <div class="event">
+                            <div class="event-date">01/01</div>
+                            <div class="event-description">🎊 Confraternização Universal</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">02 a 30/01</div>
+                            <div class="event-description">🏖️ Férias docentes / Recesso (29 dias)</div>
+                        </div>
+                    </div>
+                    
+                    <div class="month-card">
+                        <div class="month-title">📅 FEVEREIRO/2026</div>
+                        <div class="highlight">
+                            🚀 02/02 - INÍCIO DO II SEMESTRE
+                        </div>
+                        <div class="event">
+                            <div class="event-date">02 a 06/02</div>
+                            <div class="event-description">Tutoria / Ajustes de matrícula</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">04 e 05/02</div>
+                            <div class="event-description">Seleção para aluno especial</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">09 a 27/02</div>
+                            <div class="event-description">Solicitação: Colação de Grau</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">16 a 18/02</div>
+                            <div class="event-description">🎭 Carnaval</div>
+                        </div>
+                    </div>
+                    
+                    <div class="month-card">
+                        <div class="month-title">📅 MARÇO/2026</div>
+                        <div class="event">
+                            <div class="event-date">02 a 27/03</div>
+                            <div class="event-description">Período para solicitação de Diploma</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">16 a 20/03</div>
+                            <div class="event-description">👩 Semana de Combate à Violência contra a Mulher</div>
+                        </div>
+                    </div>
+                    
+                    <div class="month-card">
+                        <div class="month-title">📅 ABRIL/2026</div>
+                        <div class="event">
+                            <div class="event-date">03/04</div>
+                            <div class="event-description">✝️ Paixão de Cristo</div>
+                        </div>
+                        <div class="important">
+                            🎓 10/04 - COLAÇÃO DE GRAU: Ciências Biológicas
+                        </div>
+                        <div class="important">
+                            🎓 17/04 - COLAÇÃO DE GRAU: Gestão de Cooperativas
+                        </div>
+                        <div class="event">
+                            <div class="event-date">21/04</div>
+                            <div class="event-description">⚔️ Tiradentes</div>
+                        </div>
+                    </div>
+                    
+                    <div class="month-card">
+                        <div class="month-title">📅 MAIO/2026</div>
+                        <div class="event">
+                            <div class="event-date">01/05</div>
+                            <div class="event-description">👷 Dia do Trabalho</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">11 a 15/05</div>
+                            <div class="event-description">Tutoria / Aproveitamento para estágio</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">18 a 29/05</div>
+                            <div class="event-description">Entrega de atividades complementares</div>
+                        </div>
+                    </div>
+                    
+                    <div class="month-card">
+                        <div class="month-title">📅 JUNHO/2026</div>
+                        <div class="event">
+                            <div class="event-date">04/06</div>
+                            <div class="event-description">✝️ Corpus Christi</div>
+                        </div>
+                        <div class="event">
+                            <div class="event-date">13/06</div>
+                            <div class="event-description">🏛️ Emancipação de Serrinha</div>
+                        </div>
+                        <div class="highlight">
+                            📋 15/06 - TÉRMINO DO II SEMESTRE
+                        </div>
+                        <div class="important">
+                            📝 16 a 18/06 - PROVAS FINAIS
+                        </div>
+                        <div class="important">
+                            📊 22/06 - PUBLICAÇÃO DOS RESULTADOS FINAIS
+                        </div>
+                        <div class="event">
+                            <div class="event-date">24/06</div>
+                            <div class="event-description">🎊 São João</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="summary">
+                <h3>📊 RESUMO DO ANO LETIVO 2025</h3>
+                <div class="summary-stats">
+                    <div class="stat">
+                        <span class="stat-number">100</span>
+                        <span class="stat-label">Dias Letivos<br>1º Semestre</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">101</span>
+                        <span class="stat-label">Dias Letivos<br>2º Semestre</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">201</span>
+                        <span class="stat-label">Total de<br>Dias Letivos</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">4</span>
+                        <span class="stat-label">Colações<br>de Grau</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            📍 IF Baiano - Campus Serrinha | 📧 Para dúvidas, procure a Secretaria de Registros Acadêmicos<br>
+            <div style="margin-top: 10px; font-size: 0.8rem; opacity: 0.8;">
+                📋 Elaborado por: <strong>Servidor Adrean Moreira</strong> | SRA | Graduação
+            </div>
+        </div>
+    </div>
+</body>
+</html>
